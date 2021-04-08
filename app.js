@@ -8,9 +8,7 @@ const { App, LogLevel, SocketModeReceiver } = require('@slack/bolt');
 
 async function  main() {
 
-
   //console.log(database.getClient());
-  
   database.init({
     endpoint: process.env.DB_URI, 
     key:  process.env.DB_PRIMARY_KEY,
@@ -26,10 +24,7 @@ async function  main() {
     token: process.env.BOT_TOKEN,
     socketMode: true,
     appToken: process.env.APP_TOKEN
-    //token: process.env.BOT_TOKEN //disable this if enabling OAuth in socketModeReceiver
   });
-
-
 
   app.event('app_home_opened', events.app_home_opened);
 
@@ -38,7 +33,6 @@ async function  main() {
   (async () => {
     await app.start(process.env.PORT || '3000');
     console.log('⚡️ Bolt app started');
-
   })();
 }
 
