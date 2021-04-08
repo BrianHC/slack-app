@@ -30,7 +30,7 @@ let clap = async ({body, command, ack, client, context}) => {
       username: displayName
     })
 
-  }
+}
 
 module.exports = {
     clap
