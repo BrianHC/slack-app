@@ -21,7 +21,10 @@ class UserCache {
             })
     
             this.temp[slackUserId] = userInfo;
+            //console.log('userInfo')
+            //console.log(userInfo)
             return userInfo
+        
         }
 
     }

@@ -38,15 +38,15 @@ let clap = async ({body, command, ack, client, context}) => {
 }
 
 let save = async ({body, command, ack, client, context}) => {
-
+    console.log('command: save')
     await ack();
-  let msg = {
-    to: 'brian.c3po@gmail.com', // Change to your recipient
-    from: 'brian.c3po@gmail.com', // Change to your verified sender
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-  }
+    let msg = {
+        to: 'brian.c3po@gmail.com', // Change to your recipient
+        from: 'brian.c3po@gmail.com', // Change to your verified sender
+        subject: 'Sending with SendGrid is Fun',
+        text: 'and easy to do anywhere, even with Node.js',
+        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    }
 
  // console.log(body)
 
@@ -67,25 +67,32 @@ let save = async ({body, command, ack, client, context}) => {
   })
 
   let text = "";
+  let html = "";
+  
   if(channelHistory.ok){
-      let messages = channelHistory.messages;
-    messages.forEach(message => {
+    let messages = channelHistory.messages;
+    await messages.forEach(async message => {
         //console.log(message)
         if(message.user){
-            text += `\n ${message.user} -  ${message.text}`
+            let myUser = await Cache.user.fetch(message.user)
+            
+            //console.log(myUser)
+
+            text += `\n ${myUser.user.name} -  ${message.text}`
+            html += `<div> ${myUser.user.name} -  ${message.text} </div>`
         }
     })
   }
 
 
-  console.log(text);
+// console.log("html:")
+// console.log(html)
 
   msg.subject = `archive of ${channelId}`
   msg.to = email;
   msg.text = text;
-  msg.html = "<div>" + text + "</div>";
+  msg.html = html;
 
-  console.log(msg)
   sendGrid
     .send(msg)
     .then(() => {

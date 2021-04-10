@@ -19,6 +19,28 @@ async function  main() {
 
   email.setApiKey(process.env.SENDGRID_API_KEY)
 
+  // let msg = {
+  //   to: 'brian.c3po@gmail.com', // Change to your recipient
+  //   from: 'brian.c3po@gmail.com', // Change to your verified sender
+  //   subject: 'Sending with SendGrid is Fun',
+  //   text: 'and easy to do anywhere, even with Node.js',
+  //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+  // }
+  // let text = "hello world \n testing multiline \n is this working"
+  // msg.subject = `archive of testing`
+  // msg.text = text;
+  // msg.html = `<div>text </div> <div> text 2 </div>`;
+
+  // console.log(msg)
+  // email
+  //   .send(msg)
+  //   .then(() => {
+  //     console.log('Email sent')
+  //   })
+  //   .catch((error) => {
+  //     console.error(error)
+  //   })
+
   const app = new App({
     token: process.env.BOT_TOKEN,
     socketMode: true,
