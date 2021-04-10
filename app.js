@@ -4,6 +4,7 @@ var events = require('./src/events');
 var commands = require('./src/commands');
 var database = require('./src/database');
 var email = require('./src/email');
+const cache = require('./src/cache');
 const { App, LogLevel } = require('@slack/bolt');
 
 
@@ -23,6 +24,13 @@ async function  main() {
     socketMode: true,
     appToken: process.env.APP_TOKEN
   });
+
+  cache.user.init({
+    client: app.client,
+    botToken: process.env.BOT_TOKEN
+  })
+  // console.log('client')
+  // console.log(app.client.users)
 
   app.event('app_home_opened', events.app_home_opened);
 

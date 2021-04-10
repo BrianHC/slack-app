@@ -1,9 +1,10 @@
 let sendGrid = require('./email');
+let Cache = require('./cache');
 
 let clap = async ({body, command, ack, client, context}) => {
     await ack();
-
-    console.log(body)
+    console.log('command: clapping')
+    //console.log(body)
     let text = command.text;
     let text_2 = text.split(" ");
     let output = ""
@@ -11,14 +12,16 @@ let clap = async ({body, command, ack, client, context}) => {
       output += word + ":clap:";
     })
 
-    console.log(context)
+    //console.log(context)
 
-    let userInfo  = await client.users.info({
-      token: context.botToken,
-      user: command.user_id
-    })
+    // let userInfo  = await client.users.info({
+    //   token: context.botToken,
+    //   user: command.user_id
+    // })
+    let userInfo  = await Cache.user.fetch(command.user_id);
+    
 
-    console.log(userInfo)
+    //console.log(userInfo)
     let displayName = userInfo.user.profile.display_name || userInfo.user.profile.real_name
     //console.log(displayName)
 
@@ -47,10 +50,12 @@ let save = async ({body, command, ack, client, context}) => {
 
  // console.log(body)
 
-  let userInfo  = await client.users.info({
-    token: context.botToken,
-    user: command.user_id
-  })
+//   let userInfo  = await client.users.info({
+//     token: context.botToken,
+//     user: command.user_id
+//   })
+  let userInfo  = await Cache.user.fetch(command.user_id);
+
 
   let email = userInfo.user.profile.email;
 
