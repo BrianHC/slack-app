@@ -1,15 +1,14 @@
 require('dotenv').config()
-var http = require('http');
+const express = require('express')
 var events = require('./src/events');
 var commands = require('./src/commands');
 var database = require('./src/database');
 var email = require('./src/email');
-const { App, LogLevel, SocketModeReceiver } = require('@slack/bolt');
+const { App, LogLevel } = require('@slack/bolt');
 
 
 async function  main() {
 
-  //console.log(database.getClient());
   database.init({
     endpoint: process.env.DB_URI, 
     key:  process.env.DB_PRIMARY_KEY,
@@ -18,26 +17,6 @@ async function  main() {
   })
 
   email.setApiKey(process.env.SENDGRID_API_KEY)
-  // const msg = {
-  //   to: 'brian.c3po@gmail.com', // Change to your recipient
-  //   from: 'brian.c3po@gmail.com', // Change to your verified sender
-  //   subject: 'Sending with SendGrid is Fun',
-  //   text: 'and easy to do anywhere, even with Node.js',
-  //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-  // }
-  // email
-  //   .send(msg)
-  //   .then(() => {
-  //     console.log('Email sent')
-  //   })
-  //   .catch((error) => {
-  //     console.error(error)
-  //   })
-
-
-  // database.testFetchAll();
-
-  // console.log(database.getClient());
 
   const app = new App({
     token: process.env.BOT_TOKEN,
@@ -55,7 +34,21 @@ async function  main() {
     await app.start(process.env.PORT || '3000');
     console.log('⚡️ Bolt app started');
   })();
+
+  azureHealthCheck();
 }
 
+function azureHealthCheck() {
+  const app = express()
+  const port = process.env.PORT || 8080
+
+  app.get('/', (req, res) => {
+    res.send('Hello World!')
+  })
+
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+  })
+}
 
 main();
